@@ -114,7 +114,8 @@ func (a *AppManifestsDispatcher) Dispatch(ctx context.Context, manifests []*unst
 	if err := a.applyAndRecordManifests(ctx, manifests); err != nil {
 		return nil, err
 	}
-	if !a.skipGC && a.previousRT != nil && a.previousRT.Name != a.currentRTName {
+	// TODO Problems: legacyRTs are garbage collected only if previousRT should be garbage collected?
+	if !a.skipGC && ((a.previousRT != nil && a.previousRT.Name != a.currentRTName) || len(a.legacyRTs) > 0) {
 		if err := a.gcHandler.GarbageCollect(ctx, a.previousRT, a.currentRT, a.legacyRTs); err != nil {
 			return nil, errors.WithMessagef(err, "cannot do GC based on resource trackers %q and %q", a.previousRT.Name, a.currentRTName)
 		}
