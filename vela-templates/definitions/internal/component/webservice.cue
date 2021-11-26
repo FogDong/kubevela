@@ -11,14 +11,25 @@ webservice: {
 		status: {
 			customStatus: #"""
 				import "strconv"
-				if context.output.status.readyReplicas != _|_ {
-					message: "Ready:" + strconv.FormatInt(context.output.status.readyReplicas, 10) + "/" + strconv.FormatInt(context.output.status.replicas, 10)
+				ready: {
+					if context.output.status.readyReplicas == _|_ {
+						replica: "0"
+					}
+					if context.output.status.readyReplicas != _|_ {
+						replica:  strconv.FormatInt(context.output.status.readyReplicas, 10)
+					}
 				}
-				if context.output.status.readyReplicas == _|_ {
-					message: ""
-				}
+				message: "Ready:" + ready.replica + "/" + strconv.FormatInt(context.output.status.replicas, 10)
 				"""#
 			healthPolicy: #"""
+				ready: {
+					if context.output.status.readyReplicas == _|_ {
+						replica: 0
+					}
+					if context.output.status.readyReplicas != _|_ {
+						replica:  context.output.status.readyReplicas
+					}
+				}
 				isHealth: context.output.status.replicas == context.output.status.readyReplicas
 				"""#
 		}
