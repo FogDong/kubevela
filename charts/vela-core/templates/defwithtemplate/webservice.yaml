@@ -485,7 +485,7 @@ spec:
     customStatus: |-
       import "strconv"
       if context.output.status.readyReplicas != _|_ {
-      	message: "ReadyReplicas: " + strconv.FormatInt(context.output.status.readyReplicas, 10)
+      	message: "Ready:" + strconv.FormatInt(context.output.status.readyReplicas, 10) + "/" + strconv.FormatInt(context.output.status.replicas, 10)
       }
       if context.output.status.readyReplicas == _|_ {
       	message: ""
