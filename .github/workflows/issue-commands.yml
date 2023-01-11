@@ -77,5 +77,5 @@ jobs:
       - name: Open Backport PR
         uses: zeebe-io/backport-action@v1.0.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.VELA_BOT_TOKEN }}
           github_workspace: ${{ github.workspace }}
